@@ -8,43 +8,60 @@
 
 'use strict';
 
-module.exports = function(grunt) {
+const cacheCdn = require("../cacheCdn");
+
+module.exports = function (grunt) {
 
   // Please see the Grunt documentation for more information regarding task
   // creation: http://gruntjs.com/creating-tasks
 
-  grunt.registerMultiTask('cache_cdn', 'Wrapper for the cache-cdn library', function() {
+  let description = ```Download cdn libraries for local use (e.g. unit tests).
+  Define your cdn libs in one place and write the references into your html.```;
+
+  grunt.registerMultiTask('cache_cdn', description, function () {
+
+    var gruntDone = this.async();
+
     // Merge task-specific and/or target-specific options with these defaults.
     var options = this.options({
       punctuation: '.',
-      separator: ', '
+      separator: '\n'
     });
 
     // Iterate over all specified file groups.
-    this.files.forEach(function(f) {
-      // Concat specified files.
-      var src = f.src.filter(function(filepath) {
-        // Warn on and remove invalid source files (if nonull was set).
-        if (!grunt.file.exists(filepath)) {
-          grunt.log.warn('Source file "' + filepath + '" not found.');
-          return false;
-        } else {
-          return true;
-        }
-      }).map(function(filepath) {
-        // Read file source.
-        return grunt.file.read(filepath);
-      }).join(grunt.util.normalizelf(options.separator));
+    var gruntCdnPromises = this.files.map(function (f) {
 
-      // Handle options.
-      src += options.punctuation;
+      if (f.src.length === 0) {
+        grunt.fail.warn('grunt-cache-cdn does not have a src file configured. '
+          + ' Please update your file config.');
+      } else if (f.src.length > 1) {
+        grunt.fail.warn('grunt-cache-cdn does not support multiple source files '
+          + 'per destination. Please update your file config.');
+      }
 
-      // Write the destination file.
-      grunt.file.write(f.dest, src);
+      var filepath = f.src[0];
+      // Warn on and remove invalid source files (if nonull was set).
+      if (!grunt.file.exists(filepath)) {
+        grunt.fail.warn('Source file "' + filepath + '" not found.');
+      }
 
-      // Print a success message.
-      grunt.log.writeln('File "' + f.dest + '" created.');
+      // Call cacheCdn
+      return cacheCdn(options({
+        source: src,
+        sourceFile: undefined, // Don't use this even if set
+        destinationFile = f.dest
+      }));
     });
+
+    Promise
+      .all(gruntCdnPromises)
+      .then(function () {
+        grunt.log.writeln('cache-cdn finished');
+        gruntDone();
+      })
+      .catch(function(error) {
+        gruntDone(error);
+      });
   });
 
 };

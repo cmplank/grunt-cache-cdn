@@ -1,6 +1,6 @@
 {
   "name": "grunt-cache-cdn",
-  "description": "Wrapper for the cache-cdn library",
+  "description": "Download cdn libraries for local use (e.g. unit tests). Define your cdn libs in one place and write the references into your html.",
   "version": "0.1.0",
   "homepage": "https://github.com/cmplank/grunt-cache-cdn",
   "author": {
@@ -33,5 +33,8 @@
   },
   "keywords": [
     "gruntplugin"
-  ]
+  ],
+  "dependencies": {
+    "cache-cdn": "^1.0.0"
+  }
 }
