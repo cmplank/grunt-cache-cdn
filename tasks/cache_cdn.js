@@ -8,25 +8,17 @@
 
 'use strict';
 
-const cacheCdn = require("../cacheCdn");
+const cacheCdn = require("cache-cdn");
 
 module.exports = function (grunt) {
 
-  // Please see the Grunt documentation for more information regarding task
-  // creation: http://gruntjs.com/creating-tasks
-
-  let description = ```Download cdn libraries for local use (e.g. unit tests).
-  Define your cdn libs in one place and write the references into your html.```;
+  let description = 'Download cdn libraries for local use (e.g. unit tests). '
+    + 'Define your cdn libs in one place and write the references into your html.';
 
   grunt.registerMultiTask('cache_cdn', description, function () {
 
     var gruntDone = this.async();
-
-    // Merge task-specific and/or target-specific options with these defaults.
-    var options = this.options({
-      punctuation: '.',
-      separator: '\n'
-    });
+    var options = this.options;
 
     // Iterate over all specified file groups.
     var gruntCdnPromises = this.files.map(function (f) {
@@ -39,18 +31,19 @@ module.exports = function (grunt) {
           + 'per destination. Please update your file config.');
       }
 
-      var filepath = f.src[0];
+      var srcFilepath = f.src[0];
       // Warn on and remove invalid source files (if nonull was set).
-      if (!grunt.file.exists(filepath)) {
-        grunt.fail.warn('Source file "' + filepath + '" not found.');
+      if (!grunt.file.exists(srcFilepath)) {
+        grunt.fail.warn('Source file "' + srcFilepath + '" not found.');
       }
 
-      // Call cacheCdn
-      return cacheCdn(options({
-        source: src,
-        sourceFile: undefined, // Don't use this even if set
-        destinationFile = f.dest
-      }));
+      // Merge task-specific and/or target-specific options with these defaults.
+      var optionsForFile = options({
+        sourceFile: srcFilepath,
+        destinationFile: f.dest
+      });
+
+      return cacheCdn(optionsForFile);
     });
 
     Promise
@@ -59,7 +52,7 @@ module.exports = function (grunt) {
         grunt.log.writeln('cache-cdn finished');
         gruntDone();
       })
-      .catch(function(error) {
+      .catch(function (error) {
         gruntDone(error);
       });
   });

@@ -19,31 +19,30 @@ module.exports = function(grunt) {
         '<%= nodeunit.tests %>'
       ],
       options: {
-        jshintrc: '.jshintrc'
+        jshintrc: '.jshintrc',
+        reporterOutput: ''
       }
     },
 
     // Before generating any new files, remove any previously-created files.
     clean: {
-      tests: ['tmp']
+      tests: ['tmp', 'cdn-lock.json']
     },
 
     // Configuration to be run (and then tested).
     cache_cdn: {
       default_options: {
-        options: {
-        },
+        options: {},
         files: {
-          'tmp/default_options': ['test/fixtures/testing', 'test/fixtures/123']
+          'tmp/index.html': ['test/test-resources/index.html']
         }
       },
-      custom_options: {
+      configfile_options: {
         options: {
-          separator: ': ',
-          punctuation: ' !!!'
+          configFile: 'test/test-resources/other-cdn.json'
         },
         files: {
-          'tmp/custom_options': ['test/fixtures/testing', 'test/fixtures/123']
+          'tmp/index.html': ['test/test-resources/index.html']
         }
       }
     },
@@ -65,7 +64,7 @@ module.exports = function(grunt) {
 
   // Whenever the "test" task is run, first clean the "tmp" dir, then run this
   // plugin's task(s), then test the result.
-  grunt.registerTask('test', ['clean', 'cache_cdn', 'nodeunit']);
+  grunt.registerTask('test', ['clean', 'cache_cdn', 'nodeunit', 'clean']);
 
   // By default, lint and run all tests.
   grunt.registerTask('default', ['jshint', 'test']);

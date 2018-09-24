@@ -22,26 +22,35 @@ var grunt = require('grunt');
     test.ifError(value)
 */
 
+const MSG_FILE_EXISTS = 'The file should have been downloaded';
+
 exports.cache_cdn = {
   setUp: function(done) {
-    // setup here if necessary
     done();
   },
   default_options: function(test) {
-    test.expect(1);
+    test.expect(4);
 
-    var actual = grunt.file.read('tmp/default_options');
-    var expected = grunt.file.read('test/expected/default_options');
-    test.equal(actual, expected, 'should describe what the default behavior is.');
+    var actual = grunt.file.read('tmp/index.html');
+    var expected = grunt.file.read('test/expected/index.html');
+    test.equal(actual, expected, 'index.html files should match.');
+
+    test.ok(grunt.file.exists('tmp/css/bootstrap.min.css'), MSG_FILE_EXISTS);
+    test.ok(grunt.file.exists('tmp/js/jquery.min.js'), MSG_FILE_EXISTS);
+    test.ok(grunt.file.exists('tmp/js/jquery2.min.js'), MSG_FILE_EXISTS);
 
     test.done();
   },
-  custom_options: function(test) {
-    test.expect(1);
+  configfile_options: function(test) {
+    test.expect(4);
 
-    var actual = grunt.file.read('tmp/custom_options');
-    var expected = grunt.file.read('test/expected/custom_options');
-    test.equal(actual, expected, 'should describe what the custom option(s) behavior is.');
+    var actual = grunt.file.read('tmp/index.html');
+    var expected = grunt.file.read('test/expected/index.html');
+    test.equal(actual, expected, 'index.html files should match.');
+
+    test.ok(grunt.file.exists('tmp/css2/bootstrap.min.css'), MSG_FILE_EXISTS);
+    test.ok(grunt.file.exists('tmp/js2/jquery.min.js'), MSG_FILE_EXISTS);
+    test.ok(grunt.file.exists('tmp/js2/jquery2.min.js'), MSG_FILE_EXISTS);
 
     test.done();
   },
