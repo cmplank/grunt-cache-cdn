@@ -39,6 +39,6 @@
     "grunt-contrib-nodeunit": "^0.3.3"
   },
   "dependencies": {
-    "cache-cdn": "^1.0.0"
+    "cache-cdn": "^1.0.1"
   }
 }
