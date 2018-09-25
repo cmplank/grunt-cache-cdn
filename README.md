@@ -1,5 +1,8 @@
 # grunt-cache-cdn
 
+[![Build Status](https://travis-ci.org/cmplank/grunt-cache-cdn.svg?branch=master)](https://travis-ci.org/cmplank/grunt-cache-cdn)
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/04a3a50a63c64c26ae7deda67dc98308)](https://www.codacy.com/app/cmplank/grunt-cache-cdn?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=cmplank/grunt-cache-cdn&amp;utm_campaign=Badge_Grade)
+
 > Download cdn libraries for local use (e.g. unit tests). Define your cdn libs in one place and write the references into your html. Wrapper for the cache-cdn library.
 
 ## Getting Started
