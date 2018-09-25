@@ -149,7 +149,7 @@ grunt.initConfig({
   cache_cdn: {
     options: {},
     main: {
-      files" {
+      files: {
         'dist/index.html': ['app/index.html']
       }
     },
@@ -168,7 +168,7 @@ grunt.initConfig({
       downloadLibs: false
     },
     main: {
-      files" {
+      files: {
         'dist/index.html': ['app/index.html']
       }
     },
