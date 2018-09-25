@@ -24,6 +24,7 @@
     "node": ">= 7.0.0"
   },
   "scripts": {
+    "grunt": "grunt",
     "test": "grunt test"
   },
   "files": [

@@ -183,3 +183,4 @@ In lieu of a formal styleguide, take care to maintain the existing coding style.
 
 ## Release History
 0.1.0 - Initial creation
+0.2.0 - Working version
